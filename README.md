@@ -7,6 +7,7 @@ A modern, interactive sales dashboard built with Next.js 15, TypeScript, Tailwin
 - **Interactive Dashboard**: View sales data across multiple years (2022, 2023, 2024)
 - **Multiple Chart Types**: Switch between Bar, Line, and Pie charts using Recharts
 - **Custom Filter**: Set a sales threshold to filter data based on minimum sales values
+- **API Integration**: Fetches data from Next.js API routes instead of hardcoded mock data
 - **Data Table**: View detailed sales data in a tabular format
 - **Summary Statistics**: Display total sales, average sales, and highest performing month
 - **Atomic Component Structure**: Built with atomic design principles for maintainability
@@ -28,14 +29,17 @@ sales-dashboard/
 │   ├── app/
 │   │   ├── page.tsx          # Main dashboard page
 │   │   ├── layout.tsx        # Root layout
-│   │   └── globals.css       # Global styles
+│   │   ├── globals.css       # Global styles
+│   │   └── api/
+│   │       └── sales/
+│   │           └── route.ts # API route for sales data
 │   ├── components/
 │   │   └── charts/
 │   │       ├── BarChart.tsx  # Bar chart component
 │   │       ├── LineChart.tsx # Line chart component
 │   │       └── PieChart.tsx  # Pie chart component
 │   └── data/
-│       └── salesData.ts      # Mock sales data
+│       └── salesData.ts      # Sales data types
 ├── public/                   # Static assets
 ├── package.json              # Dependencies
 ├── tsconfig.json            # TypeScript config

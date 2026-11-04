@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { salesData2022, salesData2023, salesData2024, SalesData } from '@/data/salesData';
+import { useState, useMemo, useEffect } from 'react';
+import { SalesData } from '@/data/salesData';
 import BarChartComponent from '@/components/charts/BarChart';
 import LineChartComponent from '@/components/charts/LineChart';
 import PieChartComponent from '@/components/charts/PieChart';
@@ -12,14 +12,38 @@ export default function Dashboard() {
   const [selectedYear, setSelectedYear] = useState<number>(2024);
   const [chartType, setChartType] = useState<ChartType>('bar');
   const [salesThreshold, setSalesThreshold] = useState<number>(0);
+  const [salesData, setSalesData] = useState<SalesData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/sales?year=${selectedYear}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        setSalesData(data);
+        setError(null);
+      } catch (err) {
+        setError('Failed to load sales data. Please try again.');
+        console.error('Error fetching data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [selectedYear]);
 
   const selectedData = useMemo(() => {
-    const data = selectedYear === 2022 ? salesData2022 : selectedYear === 2023 ? salesData2023 : salesData2024;
     if (salesThreshold > 0) {
-      return data.filter((item) => item.sales >= salesThreshold);
+      return salesData.filter((item) => item.sales >= salesThreshold);
     }
-    return data;
-  }, [selectedYear, salesThreshold]);
+    return salesData;
+  }, [salesData, salesThreshold]);
 
   const renderChart = () => {
     switch (chartType) {
@@ -38,6 +62,20 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-gray-900 mb-8">Sales Dashboard</h1>
+
+        {/* Loading State */}
+        {loading && (
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8 text-center">
+            <p className="text-gray-600">Loading sales data...</p>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg shadow-md p-6 mb-8">
+            <p className="text-red-600">{error}</p>
+          </div>
+        )}
 
         {/* Controls */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
