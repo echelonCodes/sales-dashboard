@@ -182,19 +182,19 @@ export default function Dashboard() {
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold text-gray-700 mb-2">Total Sales</h3>
             <p className="text-3xl font-bold text-blue-600">
-              ${selectedData.reduce((sum, item) => sum + item.sales, 0).toLocaleString()}
+              ${selectedData.length > 0 ? selectedData.reduce((sum, item) => sum + item.sales, 0).toLocaleString() : '0'}
             </p>
           </div>
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold text-gray-700 mb-2">Average Sales</h3>
             <p className="text-3xl font-bold text-green-600">
-              ${Math.round(selectedData.reduce((sum, item) => sum + item.sales, 0) / selectedData.length).toLocaleString()}
+              ${selectedData.length > 0 ? Math.round(selectedData.reduce((sum, item) => sum + item.sales, 0) / selectedData.length).toLocaleString() : '0'}
             </p>
           </div>
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold text-gray-700 mb-2">Highest Month</h3>
             <p className="text-3xl font-bold text-purple-600">
-              {selectedData.reduce((max, item) => (item.sales > max.sales ? item : max)).month}
+              {selectedData.length > 0 ? selectedData.reduce((max, item) => (item.sales > max.sales ? item : max), selectedData[0]).month : 'N/A'}
             </p>
           </div>
         </div>
