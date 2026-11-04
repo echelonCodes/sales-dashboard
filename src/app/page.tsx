@@ -62,6 +62,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-gray-900 mb-8">Sales Dashboard</h1>
+        <p className="text-sm text-gray-500 mb-4">Interactive sales visualization with API integration</p>
 
         {/* Loading State */}
         {loading && (
